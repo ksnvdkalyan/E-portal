@@ -1,0 +1,74 @@
+<div  style="background-color: #f0f2f5;">
+  <nav class="navbar sticky-top flex-md-nowrap p-0" style="background-color: white; color: #333333;">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 mt-2 px-3" href="#" style="margin-left: 25px;"><img src="https://eaiesb.com/img/eaiesb_logo.png" style="width: 80px;">
+    </a>
+
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <button type="button" class="btn btn-outline-secondary btn-1" (click)="signOut()">Sign Out</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div *ngIf="!checkIn">
+  <div class="flex" >
+    <input type="text" style="width: 250px;" class="input form-control m-3" placeholder="Employee Id" id="fnameInput" (input)="Empnum=$event.target.value">
+    <button class="btn btn-outline-secondary btn-1 m-3" (click)="getempdetails()" (click)="send2()">Search</button>
+    <button class="btn btn-outline-secondary btn-1 m-3" (click)="getcheckin()">Check In</button>
+  </div>
+  <div style="border: 1px solid #000;">
+    <div class="table-responsive p-3">
+      <table class="table table-sm m-0">
+        <thead>
+          <tr>
+            <th>Employee Number</th>
+            <th>Check-in Time</th>
+            <th>Check-out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of empdetails">
+            <td>{{task.employeeNumber}}</td>
+            <td>{{task.checkInTime}}</td>
+            <td>{{task.checkOutTime}}</td>
+            <td><span *ngIf="task.checkOutTime == null"><button class="btn btn-outline-secondary btn-1" (click)="send(task)" (click)="getcheckin()">Check out</button></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="checkIn">
+  <div class="row text-center " style="margin-top: 2rem; height: 100vh;">
+    <div class="offset-4 col-4 offset-4">
+      <div class="form-group" style="padding-top: 40px;">
+        <input *ngIf="!checkout" type="text" class="input form-control" value={{storedNum}} id="fnameInput" readonly>
+        <input *ngIf="checkout" type="text" class="input form-control" value={{taskToUpdate?.employeeNumber}} id="fnameInput" readonly>
+      </div>
+    <div *ngIf="!vedio">
+    <div>
+    <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+    [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+    (initError)="handleInitError($event)"></webcam>
+    <br/>
+    <button class="btn btn-outline-secondary btn-1 m-3" (click)="triggerSnapshot();" title="Take Picture">Take Picture</button>
+    <button class="btn btn-outline-secondary btn-1 m-3" (click)="changevalues()">Go Back</button>
+    </div>
+    </div>
+    <h4 *ngIf="errors.length > 0">Messages:</h4>
+    <ul *ngFor="let error of errors">
+    <li>{{error | json}}</li>
+    </ul>
+    <div *ngIf="vedio">
+      <div class="snapshot" *ngIf="webcamImage">
+        <img [src]="webcamImage.imageAsDataUrl" />
+        </div>
+    </div>
+    <span *ngIf="!checkout"><button *ngIf="vedio" class="btn btn-outline-secondary btn-1 m-3" (click)="checkin()" >Submit</button></span>
+    <span *ngIf="checkout"><button *ngIf="vedio" class="btn btn-outline-secondary btn-1 m-3" (click)="checkOut()" >Submit</button></span>
+    <button *ngIf="!recap" class="btn btn-outline-secondary btn-1 m-3" (click)="recapture()">Recapture</button>
+    </div>
+
+  </div>
+</div>
+

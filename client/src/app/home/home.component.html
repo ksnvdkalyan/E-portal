@@ -1,0 +1,137 @@
+<div class="outer">
+
+  <div class="left">
+      <div class="leftinside" *ngIf="canprint">
+        <h1>HAPPY BIRTHDAY </h1>
+        <div class="nametext" *ngFor="let item of todaybdayarray,let i = index">
+          <div class="col-12" >
+            <span class="names1">{{todaybdayarray[i].username}}</span>
+          </div>
+        </div>
+        <div class="nametext" *ngFor="let item of todaybdayarray,let i = index">
+        <img class="image" [src]=todaybdayarray[i].image alt="somepic"></div>
+        <video class="vedio" src="https://videosongstatus.com/30sec-status-video/wXrsiWGcuTZ.mp4" autoplay loop muted></video>
+      </div>
+      <div class="leftinside" *ngIf="canprint1">
+        <img class="image2" src="https://sd.keepcalms.com/i/keep-calm-there-s-no-birthday-today.png" alt="no birthday pic">
+      </div>
+  </div>
+  <div class="centre">
+     <div class="top">
+    <img class="image1" src="https://eaiesb.com/img/eaiesb_logo.png" alt="company pic">
+     </div>
+     <div id="inner">
+        <div class="lgn">
+          <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist" style="font-weight: bold;">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" >Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Sign up</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent" style="margin-top: 5px;">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+              <form>
+                <div class="form-group" style="padding-top: 30px;">
+                  <input type="email" class="form-control input" placeholder="User Name" id="emailInput" (input)="username=$event.target.value">
+                </div>
+                <div class="form-group">
+                  <input matInput type="password" class="form-control input" placeholder="Enter your password" id="passwordInput" (input)="password=$event.target.value">
+                </div>
+                <div class="out" *ngIf="print.length==0">
+                  Wrong password. Please try again.
+                </div>
+                <div class="form-group text-center">
+                  <button type="button" class="btn libtn btn-1 text-white" (click)="checklogin()">Log In</button>
+                  <button type="button" class="btn cibtn btn-1 text-white" (click)="gotocamera()">Check In</button>
+                </div>
+
+              </form>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+              <form>
+                <div class="row">
+                  <div class="col-6 float-left">
+                    <div class="form-group" style="padding-top: 10px;">
+                      <input type="text" class="input form-control" placeholder="First Name" id="fnameInput" (input)="firstName=$event.target.value">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="input form-control" placeholder="Last Name" id="lnameInput" (input)="lastName=$event.target.value">
+                    </div>
+                    <div class="form-group">
+                      <input type="email" class="input form-control" placeholder="User Name" id="emailInput" (input)="username=$event.target.value">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="input form-control" placeholder="Enter your password" id="passwordInput" (input)="password=$event.target.value">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="input form-control" placeholder="DOB (YYYY/MM/DD)" id="passwordInput" (input)="DOB=$event.target.value">
+                    </div>
+                    <div class="out">
+                      {{print1}}
+                    </div>
+                    <div class="form-group text-center">
+                      <button type="button" class="bg-gradient-primary btn btn-1 text-white" (click)="Signup()">Sign Up</button>
+                    </div>
+                  </div>
+                  <div class = "col-6 float-right">
+
+                    <div *ngIf="!vedio" style="text-align:center;">
+                      <div style="padding-top:2rem">
+                        <webcam [height]="250" [width]="250" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                        [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+                        (initError)="handleInitError($event)"></webcam>
+                        <br/>
+                        <button class="btn btn-outline-secondary btn-1 m-3" (click)="triggerSnapshot();" title="Take Picture">Take Picture</button>
+                        </div>
+                        </div>
+                        <h4 *ngIf="errors.length > 0">Messages:</h4>
+                        <ul *ngFor="let error of errors">
+                        <li>{{error | json}}</li>
+                        </ul>
+                        <div *ngIf="vedio">
+                          <div class="snapshot" *ngIf="webcamImage" >
+                            <img style="width: 250px; height: 250;" [src]="webcamImage.imageAsDataUrl" />
+                            </div>
+                        </div>
+                        <button *ngIf="!recap" class="btn btn-outline-secondary btn-1 m-3" (click)="recapture()">Recapture</button>
+                      </div>
+
+                    </div>
+
+              </form>
+            </div>
+        </div>
+      </div>
+  </div>
+  </div>
+  <div class="right">
+    <div class="upcmgbday">
+      <div class="container h-100">
+        <h2 class="up">Upcoming Birthdays</h2>
+        <div class="row" *ngFor="let item of bdayboysarray,let i = index">
+          <div class="offset-1 col-5" >
+            <span class="names">{{bdayboysarray[i].names}}</span>
+          </div>
+          <div class="offset-1 col-5">
+            <span class="names">{{bdayboysdatearray[i].date}}</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    <div class="holidays">
+      <div class="container h-100">
+        <h2 class="up">Upcoming holidays</h2>
+        <div class="row" *ngFor="let item of holidaysarray,let i = index">
+          <div class="offset-1 col-5" >
+            <span class="names">{{holidaysarray[i].names}}</span>
+          </div>
+          <div class="offset-1 col-5">
+            <span class="names">{{holidaysdatearray[i].date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

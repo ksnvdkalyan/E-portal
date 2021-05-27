@@ -1,0 +1,763 @@
+<div class="back h-100" style="background-color: #f0f2f5;">
+  <nav class="navbar sticky-top flex-md-nowrap p-0" style="background-color: white; color: #333333;">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 mt-2 px-3" href="#" style="margin-left: 25px;"><img src="https://eaiesb.com/img/eaiesb_logo.png" style="width: 80px;">
+    </a>
+
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <button type="button" class="btn btn-outline-secondary btn-1" (click)="signOut()">Sign Out</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+        <div class="card" style="width: 14rem; border:0px; margin-left: 16px;">
+          <div class="card-body text-center">
+            <img [src]="imgvar" class="card-img-top text-center" alt="..." style="width: 160px;">
+            <span class="card-title" style="margin-top: 20px; font-weight: bold; display: block">{{displayuser}}</span>
+          </div>
+        </div>
+        <div class="sidebar-sticky pt-3">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Tasks</a>
+            <a class="nav-link" id="v-pills-forms-tab" data-toggle="pill" href="#v-pills-forms" role="tab" aria-controls="v-pills-forms" aria-selected="false">Forms</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-groups" role="tab" aria-controls="v-pills-groups" aria-selected="false">Groups</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-roles" role="tab" aria-controls="v-pills-roles" aria-selected="false">Roles</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+          </div>
+        </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" >
+            <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade " id="v-pills-groups" role="tabpanel" aria-labelledby="v-pills-groups-tab">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2">Groups</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" (click)="refresh()">Refresh</button>
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#addgroup">Add Group</button>
+                  </div>
+                </div>
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2 active" id="getgroups-tab" data-toggle="pill" href="#getgroups" role="tab" aria-controls="getgroups" aria-selected="false">Groups</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="getgroups" role="tabpanel" aria-labelledby="mygroups-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Groupname</th>
+                            <th>ID</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of allgroups">
+                            <td>{{task.groupName}}</td>
+                            <td>{{task._id}}</td>
+                            <td>{{task.description}}</td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#updategroup" (click)="send(task)">Update Group</button></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#removegroup" (click)="send(task)">Remove Group</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="updategroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?._id}}  id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?.groupName}}  id="lnameInput" (input)="groupname=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?.description}}  id="lnameInput" (input)="description=$event.target.value">
+                          </div>
+                          <span>
+                            {{response9}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="updategroup()">Update Group</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="removegroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remove Group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?._id}}  id="lnameInput" readonly>
+                          </div>
+                          <span>
+                            {{response8}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="removegroup()">Remove Group</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="addgroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Group Name" id="lnameInput" (input)="groupname=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Description" id="fnameInput" (input)="description=$event.target.value">
+                          </div>
+                          <span>
+                            {{response7}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="addgroup()">Add Group</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <div class="tab-pane fade" id="v-pills-roles" role="tabpanel" aria-labelledby="v-pills-roles-tab">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2">Roles</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" (click)="refresh()">Refresh</button>
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#addrole">Add Role</button>
+                  </div>
+                </div>
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2 active" id="getroles-tab" data-toggle="pill" href="#getroles" role="tab" aria-controls="getroles" aria-selected="false">Roles</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="getroles" role="tabpanel" aria-labelledby="myroles-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Groupname</th>
+                            <th>ID</th>
+                            <th>Username</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of allroles">
+                            <td>{{task.groupName}}</td>
+                            <td>{{task._id}}</td>
+                            <td>{{task.username}}</td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#updaterole" (click)="send(task)">Update Role</button></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#removerole" (click)="send(task)">Remove Role</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="updaterole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?._id}}  id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?.groupName}}  id="lnameInput" (input)="groupname=$event.target.value">
+                          </div>
+                          <span>
+                            {{response12}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="updaterole()">Update Role</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="removerole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remove Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?._id}}  id="lnameInput" readonly>
+                          </div>
+                          <span>
+                            {{response11}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="removerole()">Remove Role</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="addrole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Group Name" id="lnameInput" (input)="groupname=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Username" id="fnameInput" (input)="username=$event.target.value">
+                          </div>
+                          <span>
+                            {{response10}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="addroles()">Add Role</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+
+              <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-forms-tab">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2">Settings</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" (click)="refresh()">Refresh</button>
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#changepassword">Change Password</button>
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#setreportie">Set Reportie</button>
+                  </div>
+                </div>
+                <div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="password" class="input form-control" placeholder="Present password" id="lnameInput" (input)="password=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="password" class="input form-control" placeholder="New Password" id="lnameInput" (input)="newpassword=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="password" class="input form-control" placeholder="Confirm Password" id="fnameInput" (input)="confirmpassword=$event.target.value">
+                          </div>
+                          <span>
+                            {{response3}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="changepassword()">Change Password</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="setreportie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Set Reportie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Reportie Id" id="lnameInput" (input)="reportieID=$event.target.value">
+                          </div>
+                          <span>
+                            {{response6}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="setreportie()">Set A Reportie</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2 active" id="getreportees-tab" data-toggle="pill" href="#getreportees" role="tab" aria-controls="getreportees" aria-selected="false">Reporties</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="getreportees" role="tabpanel" aria-labelledby="myleaves-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Reportie Name</th>
+                            <th>ID</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of allreporties">
+                            <td>{{task.username}}</td>
+                            <td>{{task._id}}</td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#removereportie" (click)="send(task)">Remove Reportie</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="removereportie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remove Reportie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" value={{taskToUpdate?._id}} id="lnameInput"  readonly>
+                          </div>
+                          <span>
+                            {{response5}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn bg-danger btn-primary" (click)="Removereportie()">Remove Reportie</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="v-pills-forms" role="tabpanel" aria-labelledby="v-pills-forms-tab">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2">Leaves</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" (click)="refresh()">Refresh</button>
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#add_new_leave">Apply Leave</button>
+                  </div>
+                </div>
+                <div class="modal fade" id="add_new_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Leave</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Start Date" id="lnameInput" (input)="startDate=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="End Date" id="lnameInput" (input)="endDate=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Reason" id="fnameInput" (input)="reason=$event.target.value">
+                          </div>
+                          <span>
+                            {{response2}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="addleave()">Apply Leave</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2 active" id="myleaves-tab" data-toggle="pill" href="#myleaves" role="tab" aria-controls="myleaves" aria-selected="false">My leave</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2" id="acceptleaves-tab" data-toggle="pill" href="#acceptleaves" role="tab" aria-controls="acceptleaves" aria-selected="false">Accept Leaves</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="myleaves" role="tabpanel" aria-labelledby="myleaves-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Applied By</th>
+                            <th>Reason</th>
+                            <th>Manger</th>
+                            <th>Status</th>
+                            <th>Created Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of allleaves">
+                            <td>{{task.startDate}}</td>
+                            <td>{{task.endDate}}</td>
+                            <td>{{task.appliedBy}}</td>
+                            <td>{{task.reason}}</td>
+                            <td>{{task.Manager}}</td>
+                            <td>{{task.status}}</td>
+                            <td>{{task.createdTime}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="acceptleaves" role="tabpanel" aria-labelledby="acceptleaves-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Applied By</th>
+                            <th>ID</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Reason</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of   allreportiesleaves">
+                            <td>{{task.appliedBy}}</td>
+                            <td>{{task.id}}</td>
+                            <td>{{task.startDate}}</td>
+                            <td>{{task.endDate}}</td>
+                            <td>{{task.status}}</td>
+                            <td>{{task.reason}}</td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#SendMessage" (click)="send(task)">Set Status</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="SendMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Set Ststus</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?.id}} id="lnameInput" readonly>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder="Message" id="lnameInput" (input)="message=$event.target.value">
+                            </div>
+                            <span>
+                              {{response4}}
+                            </span>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" (click)="setstatus()">Set Status</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2">Tasks</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-outline-secondary btn-1 m-2" (click)="refresh()">Refresh</button>
+                      <button type="button" class="btn btn-outline-secondary btn-1 m-2" data-toggle="modal" data-target="#add_new_task">Add Task</button>
+                  </div>
+                </div>
+                <div class="modal fade" id="add_new_task" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add new task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Task Title" id="lnameInput" (input)="task=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="4" id="comment" placeholder="Task Description" (input)="taskdescription=$event.target.value"></textarea>
+                          </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder="Technology" id="fnameInput" (input)="technology=$event.target.value">
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder="Worklink" id="lnameInput" (input)="WorkLink=$event.target.value">
+                            </div>
+                          <span>
+                            {{print}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="addtask()">Create Task</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2 active" id="myTasks-tab" data-toggle="pill" href="#myTasks" role="tab" aria-controls="myTasks" aria-selected="true">My Tasks</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-secondary btn-2" id="groupTasks-tab" data-toggle="pill" href="#reporteeTasks" role="tab" aria-controls="reporteeTasks" aria-selected="false">Reportee Tasks</a>
+                  </li>
+                </ul>
+                <div class="modal fade" id="add_new_task" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add new task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="input form-control" placeholder="Task Title" id="lnameInput" (input)="task=$event.target.value">
+                          </div>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="4" id="comment" placeholder="Task Description" (input)="taskdescription=$event.target.value"></textarea>
+                          </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder="Technology" id="fnameInput" (input)="technology=$event.target.value">
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder="Worklink" id="lnameInput" (input)="WorkLink=$event.target.value">
+                            </div>
+                          <span>
+                            {{print}}
+                          </span>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="addtask()">Create Task</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="myTasks" role="tabpanel" aria-labelledby="myTasks-tab">
+                    <div class="table-responsive p-3">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Task </th>
+                            <th>ID</th>
+                            <th>Task Description</th>
+                            <th>Technology</th>
+                            <th>Worklink</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of alltasks">
+                            <td>{{task.Task}}</td>
+                            <td>{{task._id}}</td>
+                            <td>{{task.TaskDescription}}</td>
+                            <td>{{task.Technology}}</td>
+                            <td>{{task.WorkLink}}</td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#updatetask" (click)="send(task)">Update Task</button></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-secondary btn-1 pl-1 pr-1" data-toggle="modal" data-target="#deletetask" (click)="send(task)">Delete Task</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="deletetask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Delete task</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?._id}} id="lnameInput" readonly>
+                            </div>
+                            <span>
+                              {{response1}}
+                            </span>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" (click)="deletetask()">Delete Task</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="updatetask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Update task</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" placeholder={{displayuser}} id="lnameInput" readonly>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?._id}} id="lnameInput" readonly>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?.Task}} id="lnameInput" (input)="Task=$event.target.value">
+                            </div>
+                            <div class="form-group">
+                              <textarea class="form-control" rows="4" id="comment" value={{taskToUpdate?.TaskDescription}} (input)="TaskDescription=$event.target.value"></textarea>
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?.Technology}} id="fnameInput" (input)="Technology=$event.target.value">
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="input form-control" value={{taskToUpdate?.WorkLink}} id="lnameInput" (input)="WorkLink1=$event.target.value">
+                            </div>
+                            <span>
+                              {{msg}}
+                            </span>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" (click)="updatetask()">Update Task</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   <div class="tab-pane fade" id="reporteeTasks" role="tabpanel" aria-labelledby="reporteeTasks-tab">
+                    <div class="table-responsive p-3" style="border-top-left-radius: 10px;">
+                      <table class="table table-sm m-0">
+                        <thead>
+                          <tr>
+                            <th>Reportie name</th>
+                            <th>ID</th>
+                            <th>Task</th>
+                            <th>Task Description</th>
+                            <th>Technology</th>
+                            <th>Worklink</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let task of allreportiestasks">
+                            <td>{{task.username}}</td>
+                            <td>{{task._id}}</td>
+                            <td>{{task.Task}}</td>
+                            <td>{{task.TaskDescription}}</td>
+                            <td>{{task.Technology}}</td>
+                            <td>{{task.WorkLink}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+      </div>
+    </div>
+
