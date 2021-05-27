@@ -15,17 +15,8 @@ If the user enters their correct id and password, we will take them to the next 
 
  <p align="center">
 <img src="images/homePage.png" width="50%" height= "360">
-</p>
-
-<p align="center">
 <img src="images/groups.png" width="50%" height= "360">
-</p>
-
-<p align="center">
 <img src="images/leaves.png" width="50%" height= "360">
-</p>
-
-<p align="center">
 <img src="images/settings.png" width="50%" height= "360">
 </p>
 
