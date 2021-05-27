@@ -14,19 +14,19 @@ The project e-portal basically contains all the information about the employee o
 If the user enters their correct id and password, we will take them to the next page We used JWT tokens to provide user security for their logins. In the next page the user will get options to see their tasks that are pending and information about the tasks they performed previously, and they have an option to apply for leave. When they apply for a leave the request will be sent to his superior and he will be approving it. We can change the password. We can add Reportees and can assign tasks to them. The role of the user is set at administrator level.
 
  <p align="center">
-<img src="images/homePage.png" width="770" height= "360">
+<img src="images/homePage.png" width="50%" height= "360">
 </p>
 
 <p align="center">
-<img src="images/groups.png" width="770" height= "360">
+<img src="images/groups.png" width="50%" height= "360">
 </p>
 
 <p align="center">
-<img src="images/leaves.png" width="770" height= "360">
+<img src="images/leaves.png" width="50%" height= "360">
 </p>
 
 <p align="center">
-<img src="images/settings.png" width="770" height= "360">
+<img src="images/settings.png" width="50%" height= "360">
 </p>
 
 
